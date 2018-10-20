@@ -43,10 +43,9 @@ $ packer build \
   -var 'aws_secret_key=your_secret' \
   -var 'aws_vpc_id=your_vpc_id' \
   -var 'rds_end_point=rds_end_point' \
-  -var 'es_end_point=your_key' \
-  -var 'db_pass=your_secret' \
-  -var 'db_user=your_vpc_id' \
-  -var 'table_to_index=your_subnet_id' \
+  -var 'es_end_point=your_es_dns' \
+  -var 'db_pass=your_dbpass' \
+  -var 'db_user=your_dbuser' \
+  -var 'table_to_index=your_dbtable' \
   logstash.json
 ```
-
