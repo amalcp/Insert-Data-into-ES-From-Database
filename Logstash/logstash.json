@@ -1,0 +1,45 @@
+{
+  "variables": {
+    "aws_access_key": "undef",
+    "aws_secret_key": "undef",
+    "aws_region": "undef",
+    "aws_source_ami": "ami-69631053",
+    "aws_instance_type": "undef",
+    "aws_vpc_id": "undef",
+    "aws_subnet_id": "undef",
+    "ami_name_prefix": "logstash",
+    "rds_end_point": "undef",
+    "es_end_point": "undef",
+    "db_user": "undef",
+    "db_pass": "undef",
+    "table_to_index": "undef"
+    
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `aws_region`}}",
+    "vpc_id": "{{user `aws_vpc_id`}}",
+    "subnet_id": "{{user `aws_subnet_id`}}",
+    "source_ami": "{{user `aws_source_ami`}}",
+    "instance_type": "{{user `aws_instance_type`}}",
+    "ssh_username": "ubuntu",
+    "ami_name": "{{user `ami_name_prefix`}}-{{timestamp}}",
+    "ami_regions": "{{user `aws_build_regions`}}"
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "logstash/logstash.sh",
+      "environment_vars": [
+            "RDS_End_POINT={{user `rds_end_point`}}",
+            "ES_END_POINT={{user `es_end_point`}}",
+            "DBPASS={{user `db_pass`}}",
+            "DBUSER={{user `db_user`}}",
+            "TABLE={{user `table_to_index`}}"
+        ],
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E '{{ .Path }}'"
+    }
+  ]
+}
